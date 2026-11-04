@@ -1,6 +1,6 @@
 ---
 title: GPT-6 Astra 直接改写权重，安卓 Agent 与逆向引擎同周开源
-date: 2026-11-05
+date: 2026-11-05T07:05:00+08:00
 type: news
 tags: [AI, 开源]
 status: published
