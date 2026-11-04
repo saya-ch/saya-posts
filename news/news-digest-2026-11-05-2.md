@@ -1,6 +1,6 @@
 ---
 title: 2.8T Kimi 与万亿 Mistral 一周内放开权重，编码 Agent 长出技能层
-date: 2026-11-05
+date: 2026-11-05T20:05:00+08:00
 type: news
 tags: [AI, 开源]
 status: published
