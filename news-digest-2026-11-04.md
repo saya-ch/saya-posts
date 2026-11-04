@@ -1,5 +1,5 @@
 ---
-title: 2026-11-04 · AI 资讯
+title: 2026年11月04日 · AI 资讯
 date: 2026-11-04
 tags: [资讯, 每日更新]
 status: published
@@ -10,46 +10,46 @@ summary: 今日 AI / 大模型 / 开源与 GitHub 趋势精选 8-10 条。
 
 ## 模型与研究
 
-1. **2026 年 9 月大模型最新排行榜：30 款主流 AI 大模型**
-该榜单盘点 30 款主流模型，提及 Meta 一年三代连发、GPT-5.4/5.5 迭代，以及 DeepSeek V4 Pro 0813 的 104.8 万 token 上下文与低价开源路线。
-[原文](https://www.cnblogs.com/jinjiangongzuoshi/p/22868647)
+**1. 腾讯混元 Hy4 正式版发布：770B 参数，首次支持视觉理解与电脑操作**
+Hy4 采用 770B 总参数 MoE 架构，在前代 preview 基础上扩大预训练与后训练规模，首次加入视觉理解与 Computer Use 能力，官方称其首次跻身「最强开源模型」梯队，模型权重将于近期开源。
+[原文](https://c.m.163.com/news/a/LATPGI0C0550B1DU.html?from=subscribe)
 
-2. **开源模型最全盘点（2026 年 7 月版）：中美 14 家厂商 30+ 模型全景图**
-文章盘点中美 14 家厂商 30+ 开源模型，指出中国厂商包揽智能指数前六、MIT/Apache 宽松许可成为标配、MoE+1M 上下文普及且小模型转向 OCR 等垂直赛道。
-[原文](https://deepseek.csdn.net/6a55a1bd10ee7a33f28d37f1.html)
+**2. 美团 LongCat-2.5 发布：1.6 万亿参数，主打长程智能体与原生多模态**
+LongCat-2.5 总参数 1.6 万亿，每个 token 激活约 480 亿，强化原生视觉理解与智能体编程，并借助国产算力上的长上下文训练与 W4A4 推理支撑大规模长程强化学习。
+[原文](https://www.ghxi.com/ai202611021.html)
 
-3. **2026 年最佳开源大模型盘点**
-文章按 2026 年初情况列出可免费下载和自托管的开源 LLM，称 DeepSeek-V3.2 结合前沿推理质量、长上下文与工具使用效率，并采用稀疏注意。
-[原文](https://zhuanlan.zhihu.com/p/1999590757271618835)
+**3. Mistral Large 4 开放模型权重：1 万亿参数，编程智能体 Token 消耗降低 47%**
+ML4 总参数 1 万亿、激活 490 亿，使用 3800 块 Grace Blackwell GPU 训练，在 Artificial Analysis Coding Agent Index 得分 48%，平均每任务 Token 消耗减少 47%，以修改版 MIT 许可开放。
+[原文](https://www.ghxi.com/ai202610302.html)
 
-4. **2026 年最佳开源编程大模型：开发者指南**
-文章称已有五家实验室发布能胜任生产级编程任务的模型，建议通过统一网关访问多模型，以 DeepSeek V4 Pro 建立基准并将简单任务路由至更廉价层级。
-[原文](https://www.atlascloud.ai/zh/blog/tips/coding-plan-best-open-source-coding-llm)
+**4. 商汤开源 SenseNova Loop-9B-Preview：循环架构让小模型媲美 27B**
+模型采用 Looped Transformer，保留首尾各 4 层解码器、将中间层改为参数共享的循环计算模块，仅 9B 参数即在 WorkBuddy Bench、RaccoonPPT Bench 等评测中超过 Qwen3.5-27B。
+[原文](https://www.ghxi.com/ai202611022.html)
+
+**5. GPT-6.2 Astra 疑似小范围灰度：Codex 统计出现独立模型标识**
+部分 Codex 用户的使用量统计中出现「gpt-6.2-astra」，有账户调用占比达 19.8%，但 OpenAI 官方模型目录与公告尚未确认该型号及发布时间。
+[原文](https://www.ghxi.com/ai202611032.html)
 
 ## 开源与工程
 
-5. **GitHub 热榜项目-周榜（2026-09-06）**
-该周榜分析 20 个热门开源项目，聚焦 AI 助理、编码工具和安全检测领域，并提到 moltbot/openclaw 等项目。
-[原文](https://blog.csdn.net/u014390502/article/details/164427429)
+**6. DeepSeek 开源 Super-agent 架构：Router + Worker 双层调度**
+该架构用常驻 Router 层负责任务分派与跨任务记忆、多个 Worker 会话并行执行，并以 Fast/Slow Path 两级过滤和事件批处理摊薄调度成本，相关代码已开源。
+[原文](https://finance.sina.com.cn/tech/csj/2026-11-01/doc-inixepty4335109.shtml)
 
-6. **GitHub Trending 周榜解读：本周热门开源项目与技术趋势**
-周榜列出 VideoLingo（Python，约 +2500 星/周）、CopilotForShell（约 +1800/周）、miniDB（Go，约 +1200/周）、NotesMate（约 +900/周）和 rustpad（Rust，约 +800/周）等项目。
-[原文](https://bbs.csdn.net/weixin_28681255/article/details/100367582)
+**7. 微软 Agent Framework 更新：Go 版进入公共预览，新增 Harness Agent**
+框架整合 AutoGen 与 Semantic Kernel，提供带规划、待办跟踪、上下文压缩、记忆与可观测性的 Harness Agent，以及显式控制执行路径的图工作流；Go 版本需 Go 1.26 以上。
+[原文](https://learn.microsoft.com/zh-cn/agent-framework/overview)
 
-7. **7 个最近很火的开源项目「GitHub 热点速览」**
-其中 Google 开源的 A2A 协议以 Python 实现、约 9.8k 星且周增约 9k，旨在为智能代理应用之间的通信与互操作提供标准化方案。
-[原文](https://www.cnblogs.com/xueweihan/p/18825970)
+**8. GitHub Trending：AI 工程教程、AI 安全运营与本地推理项目升温**
+ai-engineering-hub 以 40,466 星成为大型 AI 工程教程集合，单日增星 1,191；开源 AI SOC 项目 AiSOC 达 6,353 星，内置 2,538 条可执行检测规则并支持本地 LLM 分诊。
+[原文](https://www.coddykit.com/pages/blog-detail?id=5130014&slug=github-trending-november-2026-from-a-40k-star-ai-engineering-hub-to-a-6k-star-ai)
 
-8. **OpenGithubs/github-weekly-rank：GitHub 开源项目每周飙升榜 top20**
-榜单显示 deepseek-ai/DeepInfer 约 21.8k 星、周增约 9823 星，NVIDIA/OpenShell 约 19.4k 星，anthropics/knowledge-work-plugin 等也在列。
-[原文](https://github.com/OpenGithubs/github-weekly-rank)
+**9. 阿里千问开源模型超 470 款，全球下载量突破 40 亿次**
+蔡崇信在 2026 年世界互联网大会乌镇峰会披露，千问系列累计开源逾 470 款模型、衍生二次开发版本超 33 万个，并称开源是降低中小企业 AI 研发门槛的关键路径。
+[原文](https://ai.zol.com.cn/1268/12687585.html)
 
-9. **Deep Agents：LangChain 开源 Agent 框架**
-文章介绍 Deep Agents 内置任务规划、文件读写与搜索、命令执行、子任务委派和自动上下文摘要，可用少量代码搭建 Agent。
-[原文](https://www.cnblogs.com/itech/p/20036442)
-
-10. **2026 年开源 Agent 工具包选型指南：延迟、审计、可移植性与语言栈**
-指南强调评估与可观测性层，称 Langfuse 是开源可观测性的默认选择，并与 LangGraph、CrewAI、OpenAI Agents SDK 和 Mastra 原生集成。
-[原文](https://developer.cloud.tencent.com/article/2687601)
+**10. Opera 推出 WebAI 网页标准：AI 模型可在浏览器本地运行**
+Opera 推出名为 WebAI 的新 Web 标准，目标是让用户直接在浏览器中运行 AI 模型、无需依赖云端服务，从而保证数据不出设备。
+[原文](https://www.ghxi.com/ai202610282.html)
 
 *本期由站点自动生成 · 信息以原文为准。*
