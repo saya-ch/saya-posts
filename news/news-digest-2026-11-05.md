@@ -1,48 +1,56 @@
 ---
-title: Mistral 放出 1T 参数开源旗舰，MIT 团队让大模型直接改写网络权重
+title: 1.2B 开源循环模型打赢 3.5B，3000 份中文病历进临床评测
 date: 2026-11-05
 type: news
 tags: [AI, 开源]
 status: published
-summary: 本期主线是两条「权重」消息。Mistral 10 月 29 日开放旗舰 Large 4 全部权重，1 万亿参数 MoE、1M 上下文，直接可下载。MIT 团队则让 GPT-6 Astra 不靠梯度下降，只改 Qwen 小模型 0.016% 的权重，MATH-500 就从 7.9% 提到 48.1%。工程侧，Google 把 Gemini 3.5 Flash 与 Omni 推向企业，Gravitee 4.13 一套网关统一模型协议。从能力开源到生产落地都在提速，点开正文逐条核对原文。
+summary: 开源循环 Transformer 这次是在真实预训练配方里证明了自己：ARLoop 的 1.2B 模型只用 0.5T tokens 训练，就在全部评测任务上超过此前唯一全开源的循环模型 Huginn-3.5B，数学与代码提升最明显。应用侧，CardioVascBench 用 3,262 份真实中文住院病历考 36 个系统，发现主诊断准确率高不等于诊断列表排得更准。工程侧值得盯住 vLLM 0.33.0 与 Dependabot 的 Agent 包管理支持：前者带来 927 个提交的性能与安全更新，后者开始把 Agent 技能包纳入供应链升级；ToolSpace 则用真实执行轨迹把 GLM-5.2 推到 56.6 分。正文里还有分词器三大神话、上下文腐烂的注意力解释等论文解读，点开逐条核对原文。
 ---
 
 > AI / 大模型 / 开源 / GitHub 趋势，每日精选。
 
 ## 模型与研究
 
-**1. MIT 团队展示 Weight-Space Programming：GPT-6 Astra 直接读写神经网络权重**
-四位 MIT CSAIL 研究者 11 月 2 日报告：GPT-6 Astra 不用梯度下降，仅改 Qwen3.5-0.8B 权重的 0.016% 就把 MATH-500 从 7.9% 提到 48.1%，指令遵循提升约 3 倍，修复卡死的小车策略只动 3.5% 权重即达 100% 成功率。
-[原文](https://www.alphaxiv.org/abs/2611.weight-space-programming)
+**1. ARLoop 开源 1.2B 循环 Transformer，以约三分之一参数打赢 3.5B 前辈**
+11 月 3 日，Huan Sun 团队与合作者在 arXiv 发布 ARLoop：一种基于注意力残差的循环 Transformer 架构，各层输入通过跨深度注意力选择性聚合，并发现循环模型不需要完整残差历史，滑动窗口深度注意力在大循环深度下反而更好。在 140M 与 370M 的多尺度对照实验全面优于既有循环残差设计后，作者进一步用真实预训练配方把规模推到 1.2B：仅用 0.5T tokens、三次循环训练，就在全部评测任务上超过 Huginn-3.5B——此前唯一全开源的循环 LLM，数学与代码任务提升最明显，并与 Qwen3.5-2B 相当。
+[原文](https://arxiv.org/abs/2611.05234)
 
-**2. Mistral 开放旗舰 Large 4 权重：1 万亿参数 MoE，主打编码智能体与网络防御**
-10 月 29 日权重上线 Hugging Face，原生多模态、1M 上下文，提供 FP8 1.06TB 与 NVFP4 610GB 两套检查点，官方称其为开源模型中 Coding Agents 与 Cyber Defense 的最强者，距预览仅 23 天。
-[原文](https://www.linkedin.com/posts/pierrestock_weve-just-released-the-weights-of-mistral-activity-7523050815712808961-MXMd)
+**2. CardioVascBench 上线：3,262 份真实中文住院病历考 36 个系统**
+11 月 3 日发布的心血管诊断基准，把真实中文住院病历文本与心电图报告对齐到专家核验过的 ICD-10 出院诊断，训练 2,174 例、评测 1,088 例，评测集另附英文对照翻译以支持跨语言比较。它考的不只是识别主诊断，还包括按优先级排出完整诊断列表：36 个系统的评测结果显示，主诊断准确率高并不代表诊断列表精度高。配套知识增强基线 CardioKG-Agent 中，微调加 agent 比纯微调的综合分高 73.5%。
+[原文](https://arxiv.org/abs/2611.04687)
 
-**3. Google Cloud 11 月盘点：Gemini 3.5 Flash 打头，Spark 个人 Agent 与 Antigravity 接入 Agent Platform**
-11 月 3 日官方月度回顾确认：Gemini 3.5 家族首发成员为 Flash；Gemini Omni 主打任意输入生成任意输出，先从视频做起；Gemini Spark 面向 Gemini Enterprise 与 Workspace 用户 7×24 自主执行任务。
-[原文](https://cloud.google.com/blog/products/ai-machine-learning/what-google-cloud-announced-in-ai-this-month)
+**3. 文本能力跨到语音会掉多少分：354 段对话、10 种语言的对齐基准**
+11 月 3 日发布的 Omnilingua-AudioMC，把 Audio MultiChallenge 严格扩展成 10 种语言、354 段对话、1,404 条评分项的并行基准，内容与轮次结构在转录本和语音两种条件下逐条对齐。6 个语音模型上，转录成绩换直接语音输入后波动强烈依赖模型与语言，转录分数并非可靠代理；对掉分最多的两个模型，把历史轮次替换成模型转写能在全部 10 种语言回升。基准代码已在 QwenLM 组织下开源。
+[原文](https://arxiv.org/abs/2611.04390)
+
+**4. 斯坦福论文拆穿三个分词器神话：BPB 并非分词器无关**
+11 月 3 日论文证明 BPB 等于 tokens/byte 乘以 bits/token，两个因子并不抵消：连未训练模型的 BPB 也会强烈偏好某些分词器与词表大小，而此时准确率仍是随机水平。文献里与 BPB 相关 0.989 的"unigram 归一化损失"来自混淆变量，修正后相关降到 0.057；同一份训练数据下，两种指标在每个模型规模会选出不同词表。作者还提出"分词器三难"：没有任何指标能同时满足三个合理要求，选指标就是在选研究问题。
+[原文](https://arxiv.org/abs/2611.04215)
+
+**5. 上下文腐烂是注意力竞争：126,473 次检索实验给出量化解释**
+11 月 3 日的论文在 5 个开源模型（0.5B 到 3B、四个家族）上做检索实验：中性填充加到 32K tokens 准确率仍保持 0.97 到 1.00，但同位置换成证据格式的干扰句就掉到 0.16 到 0.33，一个给查询键报出竞争值的句子会让损失放大 9 到 110 倍。模型内部，证据上的注意力质量解释了最多 58% 的损失方差，而 log 长度最多只有 8%。Probe 与全部实验数据已开源。
+[原文](https://arxiv.org/abs/2611.04169)
 
 ## 开源与工程
 
-**4. NVIDIA TensorRT-Edge-LLM 0.11.1：Nemotron 3.5 Bolt E4B 上车，Windows 与 JetPack 7.2.2 支持到位**
-10 月更新的 0.11.1 新增 Bolt E4B 及其 DFlash draft、TensorRT RTX 的 Windows x64 支持；此前 9 月该引擎在 Jetson AGX Thor 上以 6.4 倍速度完成 MLPerf Edge Agentic 基准。
-[原文](https://github.com/NVIDIA/TensorRT-Edge-LLM)
+**6. ToolSpace 用真实执行轨迹合成 Agent 工具环境，GLM-5.2 涨 12 分**
+中国人民大学团队 11 月 3 日提出工具中心的 MCP 环境合成框架：从真实 MCP 服务与开源 Agent 语料的执行轨迹中，用确定性规则挖掘数据、状态与重试依赖，聚合成带权重工具组合图，再只保留能从初始状态成功回放的样本。在 7 个长程工具基准上，Qwen3.6-35B-A3B 平均分从 23.0 提到 41.0（加 RL 到 43.2），GLM-5.2 从 44.6 提到 56.6，追平 Claude Opus 5；而 7 个前沿模型在更难的 Pro 版上最多掉 38.2 分。
+[原文](https://arxiv.org/abs/2611.05036)
 
-**5. MoE 分层推理引擎 colibri 冲上 GitHub 热榜：C 语言实现，4.7 万星**
-热专家常驻 GPU（CUDA/Vulkan）、温专家放内存、冷专家从 NVMe 流式读取，让前沿 MoE 大模型跑在既有硬件上，11 月 3 日仍在持续更新。
-[原文](https://github.com/JustVugg/colibri)
+**7. GroupAssistBench：8 万条真实群聊证明记忆召回好不等于用得好**
+11 月 3 日发布的首个来自真实群聊场景的群助手记忆基准：50 个群、80,299 条消息，标注与校验成本超过 5.3 万美元，服务请求分单群记忆、分布式记忆与冲突记忆三类。评测显示，最强记忆系统在召回上能追平全上下文输入，但在"用记忆"上大幅落后，分布式与冲突记忆差距最大；两项把检索记忆相互关联、把记住的事实绑成回答约束的小改动带来一致增益。
+[原文](https://arxiv.org/abs/2611.04867)
 
-**6. Gravitee 4.13 发布：一套 AI 网关翻译所有模型协议，混跑不同版本 MCP**
-11 月 4 日上线的能力覆盖 OpenAI、Anthropic 与自托管模型的协议互转、MCP 多版本混合路由、浏览器直连调用与 A2A 流量追踪。
-[原文](https://www.gravitee.io/blog/one-ai-gateway-every-model-protocol-spec-version)
+**8. SLATE 基准：千个 API 的电商工具集，最好的模型只完成 5% 任务**
+11 月 2 日放出的 NeurIPS 2026 Workshop 录用论文，把企业标准作业流程拆成层级化、工具锚定的步骤，配约 1,000 个 API 的电商工具库、确定性模拟器与端到端任务成功指标——必须走完全部参考结果才算成功，同时认可多样化但有效的轨迹。六个 3B 到 12B 的开源决策模型加基座模型里，最好的也只完成 5.0% 任务。基准、模拟器与评测框架全部开放。
+[原文](https://arxiv.org/abs/2611.03982)
 
-**7. Honeycomb 推出 AI SRE Agent：盯部署、抢在客户之前抓回归、偿还可靠性技术债**
-11 月 3 日官宣的个人与团队 Agent 从高基数 trace 出发，从每次事故调查中学习，并且只在团队设定的权限边界内执行动作。
-[原文](https://www.honeycomb.io/blog/honeycomb-introduces-ai-sre-agents)
+**9. vLLM 0.33.0：927 个提交、389 位贡献者，CUDA 13 成为唯一门槛**
+11 月 2 日发布的版本升级到 PyTorch 2.14 与 Triton 3.8，CUDA 12.9 轮子停发，CUDA wheel 改为与 libtorch ABI 稳定互通。推测解码新增 XPress 精炼器与 FLy 有损验证策略，MI355X 与 B300 上解码吞吐 1.04 到 1.31 倍；DeepSeek-V4.1-Flash 加 DSpark 在 GB300 上输出从 1,373 提到 3,390 tok/s。新增 /v1/decisions 与 token embeddings 接口，修复三个 GHSA 安全公告并默认收紧 CORS 来源。
+[原文](https://github.com/vllm-project/vllm/releases)
 
-**8. claude-mem 登上热榜：把 Agent 会话压缩成持久记忆，跨多款编码工具复用**
-11.2 万星项目 11 月 3 日更新：自动捕获会话、用 AI 压缩并在后续会话注入相关上下文，支持 Claude Code、Codex、Gemini、Copilot、OpenCode 等工具。
-[原文](https://github.com/thedotmack/claude-mem)
+**10. Dependabot 开始管 Agent 技能包，供应链更新覆盖 APM**
+GitHub 11 月 3 日官宣 Dependabot 版本更新支持 Agent Package Manager：为 apm.yml 声明的 git 依赖自动开升级 PR 并重生成 apm.lock.yaml，github.com 所有计划可用，GitHub Enterprise Server 3.24 提供。同日上线的 Copilot 用量 API 还把本地 BYOK 与企业自定义模型的用量拆开统计，开发者通过 Ollama、llama-server 等本地模型发出的请求，首次能单独看到日活、会话与 token 计数。
+[原文](https://github.blog/changelog/2026-11-03-dependabot-version-updates-support-agent-package-manager)
 
 *本期由站点自动生成 · 信息以原文为准。*
