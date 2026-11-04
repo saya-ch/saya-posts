@@ -1,58 +1,58 @@
 ---
-title: 具身智能体实习开到深圳：小鹏看重 MCP，华为 ICT 创新赛 11 月底截止
+title: 三场 AI 赛事十天内截止，黎曼动力开放具身智能研究实习
 date: 2026-11-05T12:00:00+08:00
 type: job
 tags: [求职, 实习]
 status: published
-summary: 本期最值得先投的是小鹏具身智能体框架开发实习：深圳、面向 2027/2028 届，工作直接落在 LLM/VLM 任务规划、MCP 工具调用与状态机编排，要求连续 6 个月、每周到岗 4 天，截止 2027 年 1 月 1 日。懂车帝把大模型 Infra、多模态 Agent 与杭州 Agent 开发放进同一批实习，12 月 19 日截止；万兴科技与 iBOXAI 分别给出 12 月 27 日和 12 月 18 日的窗口，后者本科可投 AI 应用工程师。竞赛侧，华为 ICT 大赛创新赛与编程赛 11 月 30 日截止，全国高校计算机能力挑战赛 AI 赛道 11 月 13 日收表。面经收录华为 Go 后端三面、后训练算法实习一面与美团后端高频题，可按方向对照补短板。具体门槛与投递方式以原文为准，展开正文查看全部条目。
+summary: AI 岗位的投递窗口正在收窄：黎曼动力 R-Star 计划招具身智能、世界模型方向的在校研究实习生，北京、上海两地可选；小红书大商业工程与 iBOX AI 的 2027 校招则把后端、算法、大模型应用放进同一批，截止时间落在 12 月底到 1 月初。赛事侧更紧，兴智杯今日截止，青科教育智能体大赛 11 月 10 日收材料，全国高校计算机能力挑战赛人工智能赛道 11 月 13 日关闭提交，适合拿项目去换一张能写进简历的成绩。面经部分拆了深势科技后端一面、百度 Agent 一面和阿里健康 Agent 算法实习一面，能看到面试官现在追的是状态机、上下文压缩与多 Agent 协同这些工程细节。建议先按截止时间排投递顺序，再用面经反推项目里该补的证据；具体门槛与链接见正文。
 ---
 
 > 面向 AI 全栈 / Agent / 后端 方向的求职者，实习优先。
 
 ## 岗位速览
 
-**1. 小鹏集团 · 具身智能体框架开发实习生（深圳）**
-深圳，面向 2027/2028 届本科及以上（硕士优先），方向为基于 LLM/VLM 的任务理解与规划、MCP 工具与技能调用、状态机编排、记忆与会话管理，要求连续实习 6 个月、每周到岗不少于 4 天，网申截止 2027-01-01。
-[原文](https://www.wondercv.com/xiaozhao/xpeng-2027-autumn-supply-quality-20411-c6750d/)
+**1. 黎曼动力 · R-Star 在校研究实习生**
+面向全球高校在校本科生、硕士与博士生，北京、上海两地可选，方向覆盖具身智能预训练、世界模型与动作模型、大模型预训练/后训练，要求每周到岗 4 天以上、连续 3 个月，截止 2027 年 1 月 1 日。
+[原文](https://www.wondercv.com/xiaozhao/riemann-dynamics-r-star-intern-beijing-shanghai-20439-5739ad/)
 
-**2. 懂车帝 · 大模型 Infra / 多模态 Agent / Agent 开发实习生**
-北京、杭州，2027 届本科及以上，大模型 Infra 做训推平台与 Post-Train Infra，多模态 Agent 做视频生成与智能创作，杭州 Agent 开发偏 Python/Go 后端与 CV 工程化，每周到岗 4 天、连续 3-4 个月，截止 2026-12-19。
-[原文](https://www.wondercv.com/xiaozhao/dongchedi-product-engineer-2027-autumn-19067-3afdd8/)
+**2. 小红书 · 大商业工程 2027 校招（后端/算法）**
+上海、北京、深圳三地招 2027 届本科及以上应届生（2026 年 9 月至 2027 年 8 月毕业），后端、算法（广告/推荐/搜索/CV/NLP）、数据开发等方向，页面标注截止 2027 年 1 月 2 日，官方口径为招满即止。
+[原文](https://www.wondercv.com/xiaozhao/xiaohongshu-commercial-engineering-2027-campus-20427-bb92ad/)
 
-**3. 万兴科技 · 2027 届日常实习与 Wonder A 技术岗（长沙 / 深圳）**
-长沙、深圳，2027 届本科可投大数据开发实习且有转正机会，硕士可投 AIGC 全栈与 AI Agent 应用开发，方向覆盖 LLM API 集成、RAG、多 Agent 调度与工作流编排，网申截止 2026-12-27。
-[原文](https://www.wondercv.com/xiaozhao/wondershare-daily-internship-2027-changsha-shenzhen-19854-ff1ab9/)
+**3. iBOX AI · 2027 届校招（大模型应用/后端）**
+北京、上海、深圳、杭州、成都五地招 2027 届本科及以上应届生，开放大模型应用开发、AI 软件开发、后端、算法等岗位，截止 2026 年 12 月 29 日。
+[原文](https://www.wondercv.com/xiaozhao/ibox-ai-2027-campus-recruitment-20217-4c0de3/)
 
-**4. iBOXAI（深圳盒子）· AI 应用工程师（2027 届）**
-深圳，2027 届本科及以上，做 AI Agent 平台编排、LLM Evaluation、RAG 与 Prompt Engineering，要求熟悉 Java/Python，薪资 10-15K，投递窗口为 2026-10-29 至 2026-12-18。
-[原文](https://www.wondercv.com/xiaozhao/iboxai-shenzhen-2027-campus-ai-engineer-20050-5b0022/)
+**4. 网易游戏互娱 · 全栈开发日常实习生（LiveKit 语音链路）**
+广州技术中心招全栈开发日常实习生，本科在校生可投，参与 LiveKit 端到端语音交互链路的客户端接入、服务端部署与联调，截止 2026 年 12 月 29 日。
+[原文](https://www.wondercv.com/xiaozhao/netease-games-internship-beijing-hangzhou-guangzhou-20240-5fcb1f/)
 
 ## 竞赛与机遇
 
-**5. 第十五届中国创新创业大赛 · 人工智能创新应用专业赛**
-工信部火炬中心与安徽省科技厅主办，面向 AI 创新项目团队与企业，聚焦人工智能创新应用落地，申报截止 2026-11-15，具体赛道与材料要求见原文。
-[原文](https://www.52jingsai.com/article-24150-1.html)
+**5. 兴智杯 · 全国人工智能创新应用大赛（第三届）**
+中国信通院、深圳市人工智能产业办公室与龙岗区政府主办，设技术创新、行业赋能、生态协同三个主题赛及华为云云智应用专项赛，团队报名，报名截止 2026 年 11 月 5 日（今日），决赛 11 至 12 月在深圳举行。
+[原文](http://www.aiinnovation.com.cn/)
 
-**6. 华为 · 第十一届 ICT 大赛中国赛（创新赛 / 编程赛）**
-华为主办，创新赛与编程赛均面向高校学生、3 名学生加 1 名指导教师组队，报名截止 2026-11-30，初赛 12 月、中国总决赛 2027 年 3 月。
-[原文](https://e.huawei.com/cn/talent/ict-academy/#/ict-contest?compId=85132018)
+**6. 中国青科教育智能体创新设计大赛 · 2026**
+中国青少年科技教育工作者协会主办，高校全日制在校生（本科/专科/硕士/博士）与教师均可组队，每队不超过 4 人，须用知达 AI 平台创作教育智能体，材料上传截止 2026 年 11 月 10 日。
+[原文](https://www.52jingsai.com/article-24153-1.html)
 
 **7. 全国高校计算机能力挑战赛 · 人工智能挑战赛**
-全国高等学校计算机教育研究会主办，赛题为胸部 X 光片多标签病变分类，高校在校生 1-3 人组队，报名与作品提交均截止 2026-11-13，区域赛报名费 200 元/队。
+全国高等学校计算机教育研究会主办，高校在校生分本研组与高职组参赛，赛题为胸部 X 光片多标签分类，报名与作品提交均截止 2026 年 11 月 13 日 23:59，区域赛报名费 200 元/队。
 [原文](http://www.ncccu.org.cn/)
 
 ## 面经与学习
 
-**8. 华为 · Go 后端开发 2026 秋招三面面经**
-2026-10-31 线下一日三面：一面追 hchan/hmap/slice 与 GMP、GC 并手撕单调栈，二面考内存池、GC 调优、网卡到用户态链路、Kafka 与 Redis 并手撕单词拆分，三面全是项目、协作与排期，整体难度四星。
-[原文](https://www.wondercv.com/mianjing/huawei-go-2026-614/)
+**8. 深势科技 · 后端开发一面（Agent 项目方向）**
+10 月 27 日一面，前半段围绕 Agent 项目的 workflow 状态机、Redis/MySQL 分工、上下文压缩与 npm 子进程并发追问，后半段考限流、线程池、Redis 哨兵与分库分表，手撕 CountDownLatch 和有序数组两数之和，八股与场景题各半，强度偏高。
+[原文](https://www.nowcoder.com/feed/main/detail/5f05f981e7a94fdea443984f6cb47106)
 
-**9. 华为 · 后训练与强化学习算法实习一面**
-2026-10-30 视频面 30 分钟 14 题：围绕两段实习追问模型选型与替代方案、大模型微调的数据构造、DDP/TP/PP/ZeRO 显存账，最后手撕 LeetCode 560，难度偏难。
-[原文](https://www.wondercv.com/mianjing/huawei-algorithm-2026-612/)
+**9. 百度 · Agent 开发一面（AI Coding 平台）**
+11 月 4 日 45 分钟纯项目拷打，从 AI Coding 工具链、Vue 代码编译预览、Skills 集成，问到 workflow→ReAct/multi-agent 演进、Agent 间通信失败与 Prompt 膨胀，再切优惠券超卖、Redis+MQ 幂等，手撕两数之和。
+[原文](https://www.nowcoder.com/feed/main/detail/3903a12df0d342619ce1a550b7b65e1c)
 
-**10. 美团 · 2026 校招后端面经（Redis / 线程池 / 缓存）**
-题型覆盖 Redis 五类结构及外卖场景、线程池七参数与拒绝策略、优惠券秒杀（Redis+Lua+MQ）、LRU、MySQL 主从延迟与 Cache Aside 延迟双删，适合按八股清单逐项自查。
-[原文](https://www.wondercv.com/mianjing/meituan-2026-242/)
+**10. 阿里健康 · Agent 算法工程师实习一面**
+10 月 30 日一面，深挖快手、滴滴实习中的用户标签召回、DCN-V2 特征交叉、VLM 端到端微调与多 Agent 能力盲区，手撕搜索日志 Top-K 热门 Query（UV 去重、字典序排序），研究型追问密度高。
+[原文](https://www.nowcoder.com/feed/main/detail/4543b76d09404ce7aa4530f448fb7715)
 
 *本期由站点自动生成 · 信息以原文为准，请以官方发布为准。*
