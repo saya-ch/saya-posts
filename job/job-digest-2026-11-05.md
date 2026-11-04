@@ -1,6 +1,6 @@
 ---
 title: 具身智能体实习开到深圳：小鹏看重 MCP，华为 ICT 创新赛 11 月底截止
-date: 2026-11-05
+date: 2026-11-05T12:00:00+08:00
 type: job
 tags: [求职, 实习]
 status: published
