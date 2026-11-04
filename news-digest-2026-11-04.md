@@ -1,55 +1,51 @@
 ---
-title: 2026年11月04日 · AI 资讯
+title: 千问接入 Apple 智能今日开测，Gemini 4 Carbon 登顶，DeepSeek 开源 Super-agent
 date: 2026-11-04
 tags: [资讯, 每日更新]
 status: published
-summary: 今日 AI / 大模型 / 开源与 GitHub 趋势精选 8-10 条。
+summary: 本期最大看点是国行 Apple 智能落地：11 月 4 日起随 iOS 开发者 Beta 开放测试，千问以系统级扩展接入 Siri、写作工具与视觉智能，12 月随 iOS 27.3 正式版推送。谷歌两天连发两款模型，旗舰 Gemini 4 Carbon 以 59 分登顶 Artificial Analysis 综合智慧指数，世界模型 Genie 4 则首次原生生成音频并支持实时改写场景。开源侧，DeepSeek 公开 Super-agent 双层调度架构并同步开源原型，GitHub Trending 上用纯 C 在消费级硬件跑 MoE 大模型的 colibri 星数冲上 4.7 万。此外还整理了 OpenRouter 中国模型调用量连续 27 周领先、Kimi K3.1 Pro 权重开放节点等动态。点击阅读正文查看全部 9 条精选。
 ---
 
 > AI / 大模型 / 开源 / GitHub 趋势，每日精选。
 
 ## 模型与研究
 
-**1. 腾讯混元 Hy4 正式版发布：770B 参数，首次支持视觉理解与电脑操作**
-Hy4 采用 770B 总参数 MoE 架构，在前代 preview 基础上扩大预训练与后训练规模，首次加入视觉理解与 Computer Use 能力，官方称其首次跻身「最强开源模型」梯队，模型权重将于近期开源。
-[原文](https://c.m.163.com/news/a/LATPGI0C0550B1DU.html?from=subscribe)
+**1. 国行 Apple 智能今日开测：千问接入 Siri、写作工具与视觉智能**
+苹果 10 月 31 日官宣与阿里达成合作，首批 Apple 智能功能 11 月 4 日起随最新 iOS 开发者 Beta 开放测试，12 月随 iOS 27.3 正式版面向中国用户推送；千问以「千问创作」「询问千问」等形态嵌入系统级入口，用户请求与回复不会被用于模型训练。
+[原文](https://www.sohu.com/a/1095272930_115978)
 
-**2. 美团 LongCat-2.5 发布：1.6 万亿参数，主打长程智能体与原生多模态**
-LongCat-2.5 总参数 1.6 万亿，每个 token 激活约 480 亿，强化原生视觉理解与智能体编程，并借助国产算力上的长上下文训练与 W4A4 推理支撑大规模长程强化学习。
-[原文](https://www.ghxi.com/ai202611021.html)
+**2. Gemini 4 Carbon 登顶：59 分反超 Claude Opus 5.5 与 GPT-6 Astra**
+谷歌 10 月 28 日发布旗舰模型 Gemini 4 Carbon，在 Artificial Analysis 综合智慧指数中以 59 分超越 Claude Opus 5.5（58 分）与 GPT-6 Astra（57 分）重返榜首；漏洞挖掘评测 SEC-bench Pro 取得 88.2%，无依据陈述较上代减少约一半，本周先向网络安全防御人员开放。
+[原文](https://news.cnyes.com/news/id/6640535)
 
-**3. Mistral Large 4 开放模型权重：1 万亿参数，编程智能体 Token 消耗降低 47%**
-ML4 总参数 1 万亿、激活 490 亿，使用 3800 块 Grace Blackwell GPU 训练，在 Artificial Analysis Coding Agent Index 得分 48%，平均每任务 Token 消耗减少 47%，以修改版 MIT 许可开放。
-[原文](https://www.ghxi.com/ai202610302.html)
+**3. 谷歌 Genie 4 世界模型预览：原生生成音频，可实时「改戏」**
+Google DeepMind 10 月 27 日推出世界模型 Genie 4 研究预览版，是 Genie 系列首个实时生成中同步产出环境音、音乐与对话的模型；用户可用自然语言在中途改天气、调镜头、加角色，场景一致性延长至约 2 分钟，并由 Gemini 3.8 Flash 担任实时引导智能体。
+[原文](https://m.36kr.com/p/4044846951420800)
 
-**4. 商汤开源 SenseNova Loop-9B-Preview：循环架构让小模型媲美 27B**
-模型采用 Looped Transformer，保留首尾各 4 层解码器、将中间层改为参数共享的循环计算模块，仅 9B 参数即在 WorkBuddy Bench、RaccoonPPT Bench 等评测中超过 Qwen3.5-27B。
-[原文](https://www.ghxi.com/ai202611022.html)
+**4. OpenRouter 数据：中国大模型 Token 调用量连续 27 周超美国**
+乌镇峰会披露的最新统计显示，10 月 26 日至 11 月 1 日当周中国大模型 Token 调用量连续第 27 周超过美国，全球周调用量前五的模型中中国占四席、DeepSeek 位居榜首；硅谷多家公司及德国近半数中小企业都在使用中国开源模型。
+[原文](https://www.163.com/dy/article/LASLPTOI0514R9OJ.html)
 
-**5. GPT-6.2 Astra 疑似小范围灰度：Codex 统计出现独立模型标识**
-部分 Codex 用户的使用量统计中出现「gpt-6.2-astra」，有账户调用占比达 19.8%，但 OpenAI 官方模型目录与公告尚未确认该型号及发布时间。
-[原文](https://www.ghxi.com/ai202611032.html)
+**5. Kimi K3.1 Pro 权重承诺今日前开放：2.8 万亿参数、百万上下文**
+月之暗面 10 月 24 日发布的 K3.1 系列首款模型采用 2.8T 总参数、104B 激活的 MoE 架构，支持 100 万 token 上下文，Terminal-Bench 4.0 得分 65.7%，高于 GPT-6 Astra；官方承诺完整模型权重于 11 月 4 日前开放，届时有望成为该榜单排名最高的开放权重模型。
+[原文](https://tech.ifeng.com/c/8xTWmzaVbfg)
 
 ## 开源与工程
 
-**6. DeepSeek 开源 Super-agent 架构：Router + Worker 双层调度**
-该架构用常驻 Router 层负责任务分派与跨任务记忆、多个 Worker 会话并行执行，并以 Fast/Slow Path 两级过滤和事件批处理摊薄调度成本，相关代码已开源。
+**6. DeepSeek 开源 Super-agent 架构：让系统接管会话调度**
+DeepSeek Harness 团队 10 月 31 日公布「Super-agent」架构构想并同步开源原型，采用常驻 Router 层分派任务、多 Worker 会话并行执行的双层设计，辅以事件驱动、存算分离与外部 Watchdog；实验中 p50 任务完成时间 12.4 分钟、p95 为 15.7 分钟，代码以 MIT 协议开源。
 [原文](https://finance.sina.com.cn/tech/csj/2026-11-01/doc-inixepty4335109.shtml)
 
-**7. 微软 Agent Framework 更新：Go 版进入公共预览，新增 Harness Agent**
-框架整合 AutoGen 与 Semantic Kernel，提供带规划、待办跟踪、上下文压缩、记忆与可观测性的 Harness Agent，以及显式控制执行路径的图工作流；Go 版本需 Go 1.26 以上。
-[原文](https://learn.microsoft.com/zh-cn/agent-framework/overview)
+**7. GitHub Trending：colibri 用纯 C 在普通硬件上跑 MoE 大模型**
+分层推理引擎 colibri 本周持续霸榜，星数约 4.7 万：它把热专家放在 GPU、温专家放内存、冷专家从 NVMe 流式读取，纯 C 实现零依赖，让 DeepSeek V4、Kimi K3 等前沿 MoE 模型在既有消费级硬件上运行。
+[原文](https://github.com/JustVugg/colibri)
 
-**8. GitHub Trending：AI 工程教程、AI 安全运营与本地推理项目升温**
-ai-engineering-hub 以 40,466 星成为大型 AI 工程教程集合，单日增星 1,191；开源 AI SOC 项目 AiSOC 达 6,353 星，内置 2,538 条可执行检测规则并支持本地 LLM 分诊。
-[原文](https://www.coddykit.com/pages/blog-detail?id=5130014&slug=github-trending-november-2026-from-a-40k-star-ai-engineering-hub-to-a-6k-star-ai)
+**8. beacon.sh 登上 GitHub Picks：给 Claude Code、Cursor、Codex 加统一记忆层**
+开源项目 beacon.sh 提供跨 harness 的记忆与追踪层，让 Claude Code、Cursor、Codex 等编码智能体共享上下文与执行轨迹，11 月 3 日以 363 赞位居 Product Hunt AI 榜首，本地 CLI 可免费使用。
+[原文](https://pmer.cn/en/ai/projects)
 
-**9. 阿里千问开源模型超 470 款，全球下载量突破 40 亿次**
-蔡崇信在 2026 年世界互联网大会乌镇峰会披露，千问系列累计开源逾 470 款模型、衍生二次开发版本超 33 万个，并称开源是降低中小企业 AI 研发门槛的关键路径。
-[原文](https://ai.zol.com.cn/1268/12687585.html)
-
-**10. Opera 推出 WebAI 网页标准：AI 模型可在浏览器本地运行**
-Opera 推出名为 WebAI 的新 Web 标准，目标是让用户直接在浏览器中运行 AI 模型、无需依赖云端服务，从而保证数据不出设备。
-[原文](https://www.ghxi.com/ai202610282.html)
+**9. 微软 Agent Framework 推进：Python 核心包更新至 1.24.0**
+agent-framework-core 于近日发布 1.24.0 版本，整合 AutoGen 的多智能体编排与 Semantic Kernel 的企业级特性，支持 MCP 与 A2A 协议，并提供带规划、待办跟踪、上下文压缩与可观测性的 Harness Agent 抽象。
+[原文](https://pypi.org/project/agent-framework-core)
 
 *本期由站点自动生成 · 信息以原文为准。*
