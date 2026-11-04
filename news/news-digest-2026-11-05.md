@@ -1,56 +1,48 @@
 ---
-title: 1.2B 开源循环模型打赢 3.5B，3000 份中文病历进临床评测
+title: Anthropic 让推理可验证，vLLM 与 SGLang 同周提速
 date: 2026-11-05
 type: news
 tags: [AI, 开源]
 status: published
-summary: 开源循环 Transformer 这次是在真实预训练配方里证明了自己：ARLoop 的 1.2B 模型只用 0.5T tokens 训练，就在全部评测任务上超过此前唯一全开源的循环模型 Huginn-3.5B，数学与代码提升最明显。应用侧，CardioVascBench 用 3,262 份真实中文住院病历考 36 个系统，发现主诊断准确率高不等于诊断列表排得更准。工程侧值得盯住 vLLM 0.33.0 与 Dependabot 的 Agent 包管理支持：前者带来 927 个提交的性能与安全更新，后者开始把 Agent 技能包纳入供应链升级；ToolSpace 则用真实执行轨迹把 GLM-5.2 推到 56.6 分。正文里还有分词器三大神话、上下文腐烂的注意力解释等论文解读，点开逐条核对原文。
+summary: 本期最硬的一条来自 Anthropic：FlashProve 用 zkSNARK 为推理结果出证，400B 的 Llama 4 Maverick 在单张 H100 上做到 110 token/s，单份证明约 19MB，验证只需 CPU。研究侧，斯坦福把 50 条高引 LLM 结论放到 20 个模型上复测，44% 已经过期；CloudOpsBench 用 45 个真实 AWS 任务说明 Agent 仍卡在推理。工程侧，vLLM 0.33 与 SGLang 0.5.23 同周发布，前者一次合入 927 个提交，后者把低延迟解码再推高一截。三条线指向同一个判断：能力之外，可验证性与交付效率正成为新的比较维度。本期按"可验证、可评测、可部署"三条线选材，想逐条核对数字与原文，往下翻即可。
 ---
 
 > AI / 大模型 / 开源 / GitHub 趋势，每日精选。
 
 ## 模型与研究
 
-**1. ARLoop 开源 1.2B 循环 Transformer，以约三分之一参数打赢 3.5B 前辈**
-11 月 3 日，Huan Sun 团队与合作者在 arXiv 发布 ARLoop：一种基于注意力残差的循环 Transformer 架构，各层输入通过跨深度注意力选择性聚合，并发现循环模型不需要完整残差历史，滑动窗口深度注意力在大循环深度下反而更好。在 140M 与 370M 的多尺度对照实验全面优于既有循环残差设计后，作者进一步用真实预训练配方把规模推到 1.2B：仅用 0.5T tokens、三次循环训练，就在全部评测任务上超过 Huginn-3.5B——此前唯一全开源的循环 LLM，数学与代码任务提升最明显，并与 Qwen3.5-2B 相当。
-[原文](https://arxiv.org/abs/2611.05234)
+**1. Anthropic 开源 FlashProve：用 zkSNARK 证明回复出自指定权重**
+Anthropic 11 月 3 日公开 FlashProve，把信任从"相信服务商"换成"验证数学证明"：离线阶段先对权重做承诺（单模型约 39 分钟），在线阶段再按批为回复生成零知识证明，一份承诺可覆盖约 1600 万次请求。对 400B 参数的 Llama 4 Maverick（4bit 量化），单张 H100 的证明速度约 110 token/s，1024 token 请求的证明约 18.78MB，24 线程 CPU 验证约 17 秒；代价是证明耗时约为 vLLM 原生推理的 70–95 倍，代码、技术报告与 Lean 形式化证明均以 Apache 2.0 开放。局限也写得直白：证明只覆盖整数模型与贪心解码，采样解码或超过 1024 token 的上下文仍不在保证范围内。
+[原文](https://www.anthropic.com/research/provable-inference)
 
-**2. CardioVascBench 上线：3,262 份真实中文住院病历考 36 个系统**
-11 月 3 日发布的心血管诊断基准，把真实中文住院病历文本与心电图报告对齐到专家核验过的 ICD-10 出院诊断，训练 2,174 例、评测 1,088 例，评测集另附英文对照翻译以支持跨语言比较。它考的不只是识别主诊断，还包括按优先级排出完整诊断列表：36 个系统的评测结果显示，主诊断准确率高并不代表诊断列表精度高。配套知识增强基线 CardioKG-Agent 中，微调加 agent 比纯微调的综合分高 73.5%。
-[原文](https://arxiv.org/abs/2611.04687)
+**2. 斯坦福复测 50 条 LLM 结论：44% 已经过期**
+斯坦福团队把 50 条高引 LLM 结论放到 2024 年 7 月至 2026 年 9 月发布的 20 个模型上重测，44% 已失效、34% 明显减弱，仅 16% 仍成立；22 条有明确期限的结论平均寿命只有 15.7 个月。"模型做不到"类判断老化最快，9 条推理结论中 5 条过期；引用幻觉从 GPT-3.5 的 55% 降到 GPT-6.1 Sol 的 0%，但 Qwen3.7-Flash 仍高达 69%。同一代模型之间，过期条目数从 11 条到 30 条不等，研究团队因此主张论文必须标注模型、版本、日期与提示词，方便后来者复测。失效率还随时间抬升：一年后 16%，两年后升至 39%。
+[原文](https://the-decoder.com/rapid-llm-development-is-outrunning-the-research-meant-to-explain-it-study-finds/)
 
-**3. 文本能力跨到语音会掉多少分：354 段对话、10 种语言的对齐基准**
-11 月 3 日发布的 Omnilingua-AudioMC，把 Audio MultiChallenge 严格扩展成 10 种语言、354 段对话、1,404 条评分项的并行基准，内容与轮次结构在转录本和语音两种条件下逐条对齐。6 个语音模型上，转录成绩换直接语音输入后波动强烈依赖模型与语言，转录分数并非可靠代理；对掉分最多的两个模型，把历史轮次替换成模型转写能在全部 10 种语言回升。基准代码已在 QwenLM 组织下开源。
-[原文](https://arxiv.org/abs/2611.04390)
+**3. CloudOpsBench 开源：45 个真实 AWS 任务，最高通过率 60.6%**
+密歇根大学等团队发布 CloudOpsBench v1.0，45 个任务覆盖资源下线、迁移、配置变更与故障修复，同一套任务可在真实 AWS 和仿真器中重放，代码以 Apache 2.0 开放。榜首 Claude Fable 5.1 也只完成 60.6%，完整评测耗时 38.6 小时、花费 404.3 美元；失败分析显示约 80% 源于任务范围误判、漏查相关服务或过早收工，只有约 20% 是执行了错误动作。项目同时给出失败分类与参考解法，每个任务都带种子状态、评分器与参考解，后续计划把评测扩展到 GCP、Azure 与 OCI。
+[原文](https://github.com/CloudOpsBench/CloudOpsBench)
 
-**4. 斯坦福论文拆穿三个分词器神话：BPB 并非分词器无关**
-11 月 3 日论文证明 BPB 等于 tokens/byte 乘以 bits/token，两个因子并不抵消：连未训练模型的 BPB 也会强烈偏好某些分词器与词表大小，而此时准确率仍是随机水平。文献里与 BPB 相关 0.989 的"unigram 归一化损失"来自混淆变量，修正后相关降到 0.057；同一份训练数据下，两种指标在每个模型规模会选出不同词表。作者还提出"分词器三难"：没有任何指标能同时满足三个合理要求，选指标就是在选研究问题。
-[原文](https://arxiv.org/abs/2611.04215)
-
-**5. 上下文腐烂是注意力竞争：126,473 次检索实验给出量化解释**
-11 月 3 日的论文在 5 个开源模型（0.5B 到 3B、四个家族）上做检索实验：中性填充加到 32K tokens 准确率仍保持 0.97 到 1.00，但同位置换成证据格式的干扰句就掉到 0.16 到 0.33，一个给查询键报出竞争值的句子会让损失放大 9 到 110 倍。模型内部，证据上的注意力质量解释了最多 58% 的损失方差，而 log 长度最多只有 8%。Probe 与全部实验数据已开源。
-[原文](https://arxiv.org/abs/2611.04169)
+**4. Anthropic 上线 Message Threads：长对话首 token 快约 35%**
+Anthropic 11 月 2 日把 Message Threads 推上公测：过去每一轮都要重发全部历史，几十万 token 后延迟被迅速放大；新机制把会话状态留在服务端，后续请求只发送新增消息，50 万至 100 万 token 的请求首 token 时间中位数下降约 35%。线程在内存中加密保存、闲置 5 分钟过期，token 计费不变，已覆盖 Claude 平台以及 AWS、Microsoft Foundry、Google Cloud 三个云入口，对编码与 computer-use 类长任务收益最明显，也意味着 Agent 的多轮工具调用不必再反复传输历史上下文。
+[原文](https://claude.com/resources/articles/message-threads)
 
 ## 开源与工程
 
-**6. ToolSpace 用真实执行轨迹合成 Agent 工具环境，GLM-5.2 涨 12 分**
-中国人民大学团队 11 月 3 日提出工具中心的 MCP 环境合成框架：从真实 MCP 服务与开源 Agent 语料的执行轨迹中，用确定性规则挖掘数据、状态与重试依赖，聚合成带权重工具组合图，再只保留能从初始状态成功回放的样本。在 7 个长程工具基准上，Qwen3.6-35B-A3B 平均分从 23.0 提到 41.0（加 RL 到 43.2），GLM-5.2 从 44.6 提到 56.6，追平 Claude Opus 5；而 7 个前沿模型在更难的 Pro 版上最多掉 38.2 分。
-[原文](https://arxiv.org/abs/2611.05036)
+**5. vLLM 0.33.0 发布：927 个提交，CUDA 12.9 正式退场**
+vLLM 11 月 2 日发布 0.33.0，含 927 个提交、389 名贡献者（其中 122 名新人），升级 PyTorch 2.14，并只发布 CUDA 13.0 轮子，CUDA 12.9 镜像与 `-cu129` 标签停止更新。新版本为 Reflection Beam-1.0、Step-5 Preview 等模型提供 day-0 支持；DFlash/DSpark 不再预留草稿槽位，官方基准中 GB300 上 DeepSeek-V4.1-Flash 的输出从 1373 提升到 3390 token/s。破坏性变更还包括最低 Python 升到 3.11、移除 Medusa 与 MLP speculator，升级前需要逐项对照；镜像侧则新增 AWS EFA 变体，方便多机 KV 传输。
+[原文](https://github.com/vllm-project/vllm/releases/tag/v0.33.0rc3)
 
-**7. GroupAssistBench：8 万条真实群聊证明记忆召回好不等于用得好**
-11 月 3 日发布的首个来自真实群聊场景的群助手记忆基准：50 个群、80,299 条消息，标注与校验成本超过 5.3 万美元，服务请求分单群记忆、分布式记忆与冲突记忆三类。评测显示，最强记忆系统在召回上能追平全上下文输入，但在"用记忆"上大幅落后，分布式与冲突记忆差距最大；两项把检索记忆相互关联、把记住的事实绑成回答约束的小改动带来一致增益。
-[原文](https://arxiv.org/abs/2611.04867)
+**6. SGLang 0.5.23：1007 个 PR，低延迟解码最高快 75%**
+SGLang 11 月 2 日发布 0.5.23，合入 1007 个 PR、来自 257 名贡献者，新增 Muse Spark Open、Beam-1.0、MiniMax-M3.1-Flash 等模型支持。低延迟模式用融合持久化内核执行 DeepSeek-V4.1-Flash 解码，GB300 单用户最高快 44%、MI350X 最高快 75%；MoE 模型在 H200 的 8K 提示上首 token 提前 30%–58%，分页专家机制则让超出显存的 MoE 比 CPU offload 快至多 30 倍。该版本还把 DeepSeek-V4.1 在 GB300 的预填充吞吐提高至多 1.5 倍，并新增 Google TPU7x 支持，AMD ROCm 10.0 与 CUDA 13 镜像同步更新。
+[原文](https://github.com/sgl-project/sglang/releases/tag/v0.5.23)
 
-**8. SLATE 基准：千个 API 的电商工具集，最好的模型只完成 5% 任务**
-11 月 2 日放出的 NeurIPS 2026 Workshop 录用论文，把企业标准作业流程拆成层级化、工具锚定的步骤，配约 1,000 个 API 的电商工具库、确定性模拟器与端到端任务成功指标——必须走完全部参考结果才算成功，同时认可多样化但有效的轨迹。六个 3B 到 12B 的开源决策模型加基座模型里，最好的也只完成 5.0% 任务。基准、模拟器与评测框架全部开放。
-[原文](https://arxiv.org/abs/2611.03982)
+**7. Claude Code 2.1.317：给 Agent SDK 钩子加"失败即阻断"**
+Claude Code 2.1.317 把安全与成本控制继续前移：新增联网或调用 shell 前确认账号邮箱的检查，`onFailure: "block"` 让 Agent SDK 钩子失败时直接阻断动作，并开放按开发者、按天、按 IdP 组读取历史花费的成本报表 API。该版本还修复了 MCP 服务器首轮后断连、云会话权限模式回退、子代理模型继承错误等一批长尾问题。对把 Claude Code 接进 CI 或自建网关的团队，这些开关直接决定权限边界与账单可见性。
+[原文](https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md)
 
-**9. vLLM 0.33.0：927 个提交、389 位贡献者，CUDA 13 成为唯一门槛**
-11 月 2 日发布的版本升级到 PyTorch 2.14 与 Triton 3.8，CUDA 12.9 轮子停发，CUDA wheel 改为与 libtorch ABI 稳定互通。推测解码新增 XPress 精炼器与 FLy 有损验证策略，MI355X 与 B300 上解码吞吐 1.04 到 1.31 倍；DeepSeek-V4.1-Flash 加 DSpark 在 GB300 上输出从 1,373 提到 3,390 tok/s。新增 /v1/decisions 与 token embeddings 接口，修复三个 GHSA 安全公告并默认收紧 CORS 来源。
-[原文](https://github.com/vllm-project/vllm/releases)
-
-**10. Dependabot 开始管 Agent 技能包，供应链更新覆盖 APM**
-GitHub 11 月 3 日官宣 Dependabot 版本更新支持 Agent Package Manager：为 apm.yml 声明的 git 依赖自动开升级 PR 并重生成 apm.lock.yaml，github.com 所有计划可用，GitHub Enterprise Server 3.24 提供。同日上线的 Copilot 用量 API 还把本地 BYOK 与企业自定义模型的用量拆开统计，开发者通过 Ollama、llama-server 等本地模型发出的请求，首次能单独看到日活、会话与 token 计数。
-[原文](https://github.blog/changelog/2026-11-03-dependabot-version-updates-support-agent-package-manager)
+**8. Ollama 0.40.14：修好 OpenAI 兼容层的采样默认值**
+Ollama 11 月 3 日发布 0.40.14，重点修兼容性：OpenAI 兼容端点不再把未传 `temperature`/`top_p` 的请求强设为 1.0，改为沿用模型自带的采样参数；`ollama launch claude` 会应用模型的输出上限，避免云模型撞上 128k 默认帽。另修复云搜索压缩响应的解码、`/v1/responses` 的输入保真，并加快 MLX 后端大词表上的 top-k 采样。这类小版本看似琐碎，却决定了同一客户端在本地与云端之间切换时能否拿到一致的输出。
+[原文](https://github.com/ollama/ollama/releases/tag/v0.40.14)
 
 *本期由站点自动生成 · 信息以原文为准。*
