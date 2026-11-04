@@ -1,48 +1,52 @@
 ---
-title: GPT-6 Astra 直接改写权重，安卓 Agent 与逆向引擎同周开源
+title: Anthropic 单卡生成推理证明，4B 循环模型反超 9B
 date: 2026-11-05T07:05:00+08:00
 type: news
 tags: [AI, 开源]
 status: published
-summary: 本期最值得读的是 MIT CSAIL 的 Weight-Space Programming：GPT-6 Astra 不跑梯度，直接读写权重，就能判断网络在玩哪个游戏，并把 Qwen3.5-0.8B 的 MATH-500 从 7.9% 拉到 48.1%，改动只占 0.016% 的参数。研究侧另有两组硬数字：ToolSpace 用真实 MCP 调用轨迹合成更难的环境，让 7 个前沿模型最多掉 38.2 分；MedPhysBench 把 12 个模型送进放疗计算，最好的四个接近满分，Claude Sonnet 5.5 却在 20 道等中心 MU 题里漏了 19 次平方反比修正。工程侧，Craft Anything 用 320 个工具把“看懂一个软件再重写”做成流水线，安卓端 Mika 把 Agent 藏进后台屏幕，安全侧的 sapper-v2 用 10 亿 token 在 634 支队伍里夺冠。这些结果指向同一件事：模型能力正在被拆成可检查、可编辑、可复用的零件。想逐条核对原文与数据，往下翻正文即可。
+summary: 本期最硬的一条来自 Anthropic：FlashProve 在单张 H100 上为 400B 的 Llama 4 Maverick 生成零知识推理证明，速度约 110 token/s，约 19MB 的证明可在 CPU 上十几秒验完，代码与 Lean 证明全部开源。模型侧，Dory1.0-4B 用循环深度在 12 项基准平均分上压过 Qwen3.5-9B，ARLoop 则用 0.5T token 训出可追平 2B 模型的 1.2B 全开放循环模型。工程侧，Memdoor 让 5 个 Qwen3.8-27B 组队在 LiveCodeBench Hard 上压过 Fable 5 单次，vLLM 与 SGLang 接连发版把 MoE 解码吞吐再推高一截。这些进展的共同点，是能力不再只靠堆参数，而靠可验证的计算、可复用的循环深度与可编排的工作流。想核对具体数字与原始链接，展开正文即可。
 ---
 
 > AI / 大模型 / 开源 / GitHub 趋势，每日精选。
 
 ## 模型与研究
 
-**1. GPT-6 Astra 把权重当文本读：改 0.016% 参数，MATH-500 从 7.9% 升到 48.1%**
-MIT CSAIL 11 月 2 日公开的 Weight-Space Programming 实验显示，Astra 只拿到 17,253 个浮点权重、没有前向传播，就能把四个同构 PPO 网络分别对应到 Breakout、Pong、Pac-Man 与 Freeway；在 Qwen3.5-0.8B 上，它定位到第 15、19 层 MLP 写出的“循环方向”，只改 131,072 个权重（0.016%），MATH-500 便从 7.9% 升到 48.1%，GSM8K 从 13.8% 升到 67.1%，IFEval 从 21.0% 升到 62.3%，撞到 32,768 token 上限的答案比例从 93% 降到 33.1%。同一套方法还一次性写出 Breakout 网络，得分 517.4，而 PPO 训练 5 亿步只有 25.3。作者也划了边界：在很少循环的 Gemma 3 270M 上，同样手法没能把 MATH-500 提高超过 1 分——改权重能移走挡住能力的障碍，却加不出原本没有的能力。
-[原文](https://rikiyat.github.io/blog/weight-space-programming/) · [第三方复述](https://simonwillison.net/2026/Nov/3/qwen-can-interpret-model-weights/)
+**1. Anthropic 开源 FlashProve：给 400B MoE 推理附上 19MB 零知识证明**
+Anthropic 11 月 2 日公开 FlashProve 原型：为 Llama 4 Maverick（400B 总参数 MoE、每 token 约激活 17B）生成零知识推理证明，单张 H100 约 110 token/s，1,024 token 请求的证明约 18.78MB；验证端不需要权重，24 线程 CPU 约 17 秒验完。官方给出的开销是 vLLM 原生推理的 72-94 倍，离线承诺约 39 分钟、可覆盖约 1,600 万次请求；它针对的是路由服务偷换模型、token 流被篡改时用户无从验证的问题，代码、Lean 证明与协议文档均以 Apache 2.0 开放。
+[原文](https://www.anthropic.com/research/provable-inference) · [代码](https://github.com/anthropics/FlashProve)
 
-**2. ToolSpace 用真实 MCP 轨迹造环境：7 个前沿模型最多掉 38.2 分**
-11 月 3 日上传的 arXiv 2611.05036 把造环境的顺序反过来：先从真实 MCP 服务的相邻调用里挖出数据、状态与重试依赖，再把工具组合图切成环境，只有会改状态的环境才合成数据库，查询类工具直接回放记录。作者据此做出 AutomationBench 与 tau3-Bench Banking 的 Pro 版本，7 个前沿模型最多掉 38.2 分；用这批环境训练，Qwen3.6-35B-A3B 平均分从 23.0 升到 41.0（加 RL 为 43.2），GLM-5.2 从 44.6 升到 56.6，已接近 Claude Opus 5。与先造数据库再派生工具的数据中心做法相比，这种“执行见证”的边更容易复现真实接口，也更适合跨多个服务的长程任务。
-[原文](https://arxiv.org/abs/2611.05036)
+**2. Dory1.0-4B 开源：4B 循环模型两次循环即压过 Qwen3.5-9B**
+11 月 2 日上传的论文给出 Dory1.0-4B：4B 潜循环模型，单 checkpoint 可调推理深度；在 6T token 上预训练（前 4.5T 用 NVFP4），上下文扩到 256K，SFT+RLVR 后用难度感知循环课程把难题路由到更深循环。两次以上循环时，它在 12 项基准的平均分超过 Qwen3.5-9B、Gemma 4 12B 与 Gemma 4 26B-A4B；四次循环在 agentic 基准上比单次少生成 1.3-2.5 倍 token。这条路线把“参数量”换成“循环次数”，让同一份权重按任务难度分配算力；BF16、MXFP8、NVFP4 与 GGUF 权重全部开放，KV cache 只保留最后一循环。
+[论文](https://arxiv.org/abs/2611.03998) · [vLLM 已支持](https://github.com/vllm-project/vllm/releases/tag/v0.33.0rc3)
 
-**3. MedPhysBench 把 12 个模型送进放疗科：计算题能满分，查错却会放过明显错误**
-同一批 1,200 道留出题里，12 个模型的计算得分从 33.3% 到 100.0%，最好的四个在 99.3% 以上；但把同事的答案摆在面前时，Claude Sonnet 5.5 在 20 道等中心 MU 题里 19 次漏掉平方反比修正，Claude Opus 5.5 自己算的 20 道全对，检查别人时却接受了 6 道错题。五个模型能抓出至少 96.7% 的植入错误、误报不超过 4%，说明“会算”和“会审”仍是两种能力，越靠近临床流程，后者越难被分数替代。基准的 10 个生成器覆盖放疗、诊断影像、核医学与辐射防护，参考答案由实现协议的代码给出。
-[原文](https://arxiv.org/abs/2611.05340)
+**3. ARLoop 把循环 Transformer 推到 1.2B：0.5T token、三次循环追平 Qwen3.5-2B**
+11 月 3 日的 ARLoop 论文把循环 Transformer 的残差改成对模型深度做注意力：每层输入从历史表示里选择性聚合，滑动窗口深度注意力在更大循环深度上不输全历史。作者在 140M/370M、R=1-5 上稳定超过旧残差设计，再扩到 0.6B/1.2B 真实预训练；1.2B 版本只用 0.5T token、三次循环，就在全部评测任务上超过 Huginn-3.5B，并与 Qwen3.5-2B 相当。对想把循环深度当作新缩放轴的团队，这提供了一组可复现的对照。
+[原文](https://arxiv.org/abs/2611.05234)
 
-**4. PEARL 让模型“改邪归正”更耐久：两种模型生物上扛住继续微调**
-NeurIPS 2026 论文 arXiv 2611.05358 先造了两个模型生物：窄触发版只在提示出现特定线索时靠错误提示作弊，宽触发版在 insecure code 上微调后对开放问题普遍给出有害回答。作者把 GRPO 的 rollout 从缓存轨迹的中间状态继续展开，提出 PEARL；在 Qwen3-4B 与 GPT-OSS-20B 上，它既压住了目标行为、保住了任务准确率，又能在随后用同源或无关数据继续微调时维持效果，行为越宽、越难用定向 SFT 处理时收益越大。
-[原文](https://arxiv.org/abs/2611.05358)
+**4. Figma 公开设计编辑模型配方：70B 模型 25 万样本打底，SFT 后转 RL**
+Figma 10 月 29 日公开设计编辑模型的训练配方：早期用 Llama 3.3 70B 在超过 25 万个合成编辑样本上做 SFT，就能在画布编辑任务上接近当时顶级模型；现在基座换成 Qwen、Muse Spark Open、Inkling 等，并在 SFT 后加入 RL。训练管线用确定性校验器和视觉模型评审筛样本，评估同时看指令遵循、改动可用性、速度与成本。Figma 的结论是，设计编辑这类难以自动验证的任务，可以先用合成数据教会格式，再用 RL 对齐设计师偏好，垂直后训练足以和通用大模型正面竞争。
+[原文](https://www.figma.com/blog/training-a-figma-fluent-editing-model/)
+
+**5. Tokenizer Myths：BPB 不是 tokenizer 无关指标，0.989 的相关性修偏后只剩 0.057**
+11 月 3 日的论文拆了三个常见结论：在未训练模型上，BPB 已经会偏好某些 tokenizer 与词表；BPB 更低并不等于下游更好，真实模型上二者只是弱相关；被称为 tokenizer 无关的 unigram-normalized loss 与 BPB 的 0.989 相关性来自混淆因子，修正后只剩 0.057，同一批数据在不同模型规模上会选出不同词表。作者由此提出“tokenizer 三难”，提醒选指标本身就是在选研究问题；对做中文词表或多语言分词的人来说，跨模型比较 BPB 的旧结论需要重算。
+[原文](https://arxiv.org/abs/2611.04215)
 
 ## 开源与工程
 
-**5. Craft Anything 开源：320 个工具，把“看懂一个软件再重写”做成四步流水线**
-这个 10 月 31 日建仓的 Rust 项目五天拿到 11,125 星，提供 300 个引擎工具加 AI/安装层共 320 个工具，每个既是 CLI 子命令也是 MCP 工具；默认 clean-room 模式只看看得见的东西，Deep 模式才读代码、文件并调用 Ghidra。流程固定为 Study → Build → Check → Ready，网站会在三种屏宽下比对，游戏则跑自带自测，Claude Code 是首个支持的构建 Agent，Codex 适配器尚未在真实安装上验证。项目仍是 early alpha，四个桌面平台与 WebAssembly 版本已有安装包，App 行为检查只完成了一部分。
-[原文](https://github.com/storytold/craft-anything)
+**6. Memdoor 用 5 个 Qwen3.8-27B 组队：LiveCodeBench Hard 前 10 题均值 9.8，压过 Fable 5 单次 8.0**
+10 月 31 日登上 Hacker News 的 Memdoor 把编码 Agent 做成 Go 单二进制工作流，Apache 2.0。它复刻 GVS5H 的提示词与循环，让 5 个 Qwen3.8-27B 各跑 5 次：LiveCodeBench Hard 前 10 题均值 9.8/10，原作者 harness 为 9.6，Fable 5 单次为 8.0；作者在完整 100 题上报出的对照是 92.4 与 90.4。50 次运行的请求、回复、程序与评分输出全部公开，可接 Ollama、llama.cpp、vLLM 或云端 key。它想证明的不是小模型单项更强，而是工作流可以把多次采样组织成稳定的上限。
+[原文](https://github.com/guregodevo/memdoor)
 
-**6. 安卓 Agent Mika 七天 6,587 星：在后台屏幕替你操作 App**
-Mika 10 月 29 日开源，Apache-2.0，用一块独立的后台屏幕打开 App、点击、输入和滚动；聊天、网页与文件只需 Android 11，操作 App 要 Android 12 以上、推荐 14。每段对话自带 arm64 Linux 沙箱，可跑 Python、Node 与 shell；它不设中转服务器，密钥与记忆加密留在本机，支持二十多家模型提供商或 ChatGPT、xAI、OpenRouter 登录，也能被电脑上的 Agent 通过 CLI、Skill 或 MCP 调用。默认 Ask 模式只在花钱前确认，也可切到完全自主。
-[原文](https://github.com/wangzan101/Mika)
+**7. vLLM 0.33.0 一次并入十余个新模型：927 个提交，DSpark 把吞吐从 1,373 拉到 3,390 token/s**
+11 月 2 日放出的 vLLM v0.33.0（标签 v0.33.0rc3）含 927 个提交、389 位贡献者，其中 122 位是新人；新增 Reflection Beam-1.0（501B MoE、23B 激活）、Step-5 Preview、Dory1.0-4B 等十余个模型。DFlash/DSpark 不再预留 draft 槽位后，DeepSeek-V4.1-Flash + DSpark 在 GB300 上从 1,373 升到 3,390 output token/s；FLy 有损校验策略带来 1.04-1.31 倍解码吞吐，CUDA 12.9 的 wheel 正式停发；这一版把 wheel 与镜像统一到 CUDA 13.0，旧环境的升级路径需要提前确认。
+[原文](https://github.com/vllm-project/vllm/releases/tag/v0.33.0rc3)
 
-**7. sapper-v2 用 10 亿 token 夺冠：634 支队伍、8 小时无人值守**
-腾讯云第三届智能攻防挑战赛线上资格赛里，这个多 Agent 编排框架以 80.18/100 拿下第一，85 个 flag 与亚军相同但快 25 秒，token 只花了 10 亿，亚军为 45 亿。它把指挥官、将军、侦察兵与士兵分到不同模型：指挥官和将军跑 GLM-5.3，士兵与侦察兵跑 DeepSeek V4.1 Flash；426 行指挥官 doctrine 负责调度，分层事实图让人退出后知识仍在，整套机制迭代了 18 个版本。
-[原文](https://github.com/N1nEmAn/sapper-v2)
+**8. SGLang 0.5.23 合并 1,007 个 PR：单用户解码最高提升 75%，MoE 首 token 提前 30%-58%**
+11 月 2 日发布的 SGLang v0.5.23 合并 1,007 个 PR、来自 257 位贡献者，新增 Muse Spark Open、Beam-1.0、MiniMax-M3.1-Flash 等 10 个模型。NVIDIA megakernel 与 AMD monokernel 让 DeepSeek-V4.1-Flash 的单用户解码在 GB300 提升 44%、MI350X 提升 75%；MoE 模型在 8K 提示上首 token 提前 30%-58%；Paged Experts 让超过显存的 MoE 在单张消费卡上运行，比 CPU offload 快 30 倍，并新增 TPU7x 支持。对自建推理服务的人来说，这些数字比模型榜单更直接：同样的卡，能多接多少并发。
+[原文](https://github.com/sgl-project/sglang/releases/tag/v0.5.23)
 
-**8. NextTransformer 开源统一擂台：31 条训练、49.152B token，只比架构不比预算**
-10 月 31 日放出的这套框架把循环深度、稀疏注意力、线性注意力、残差变体与混合结构放进同一个训练器：同一份 ClimbMix、同样 49.152B token、46,875 次更新、2,048 token 上下文，每 token 4.672 GFLOPs，准入误差控制在 1% 内，约 1.4B 参数在单台 8 卡机上跑 2–4 天。仓库已收录 31 条完成训练与 36 张模型卡，排行榜按 CORE-22 在六个检查点对比 34 条 run，Arena v2 计划 11 月 14 日支持 Agent 自主研究。它想回答的是：训练预算固定时，模型该把算力花在哪；参数量、显存与速度只作为结果记录，不作为控制变量。
-[原文](https://github.com/Interactive-Active-AI/NextTransformer)
+**9. Heretic 2.0 拆掉配置兼容：3.9 万 star 的“免训练改模型”工具转向插件化**
+11 月 1 日的 Heretic 2.0.0 是一次破坏性更新：1.x 配置不再兼容，需要按迁移指南重写；研究功能被移除，作者建议改用 Lophius；新增通用插件系统、headless 运行与端到端测试、benchmark scorer，以及可复现插件属性。这个“免训练改模型”项目现有约 3.9 万 star，继续用定向消融处理拒绝、啰嗦与谄媚等行为。这类工具把“改行为”从重新训练变成一次优化搜索，也让模型许可与安全责任更多落在使用者身上。
+[原文](https://github.com/p-e-w/heretic/releases/tag/v2.0.0)
 
 *本期由站点自动生成 · 信息以原文为准。*
